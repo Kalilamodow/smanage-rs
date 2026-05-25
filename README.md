@@ -1,0 +1,15 @@
+# smanage-rs
+
+My website, [https://kmdw.dev](kmdw.dev), is a bunch of separate webservers all proxied behind an nginx instance. A while back, I wrote a tool which I called `smanage` in regular Python. It took a JSON configuration file and outputted an nginx configuration file along with a Bash script to start every server. However, as extensions piled up (run configurations, weird subdomain stuff, etc.) it became really unmaintainable. So, I rewrote it in Rust -- which is what you're seeing now!
+
+I have little experience with Rust, so the code is probably pretty bad. I'd appreciate any feedback.
+
+## Development
+
+It's a pretty basic Rust project. Just `cargo run`, `cargo build`, the whole shebang.
+
+It uses `serde` and `serde_json` for reading the configuration file, then uses a ton of String writes to codegen the nginx and Bash files. I tried to make it modular (or at least as modular as something like this could be), but I didn't go too far, so there's a few files but I didn't add a huge framework to make it infinitely extensible. Though, that might be a fun future project.
+
+## Notes
+
+This was my first new project after switching from VSCode to Zed. I love Zed because it's really fast (sometimes I wait for a few seconds after Zed starts thinking that it's loading since it's not doing anything, but turns out it's already ready to go!) but it's got a few quirks and is missing some features (eg. extension commands). But, it's worth it to support the Zed project.
