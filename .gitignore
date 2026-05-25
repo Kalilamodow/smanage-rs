@@ -1,4 +1,5 @@
 /target
+/.cargo
 
 # testing stuff
 test_config.json
