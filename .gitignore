@@ -1,1 +1,6 @@
 /target
+
+# testing stuff
+test_config.json
+output.conf
+output.sh
