@@ -2,6 +2,7 @@ mod config;
 mod nginx_generator;
 mod runall_generator;
 
+use std::thread;
 use std::{fs, time::Instant};
 
 use argh::FromArgs;
@@ -32,19 +33,26 @@ fn main() {
 
     println!("Parsed configuration.");
 
-    let nginx = generate_nginx_file(&configuration);
-    println!("Generated Nginx configuration.");
-    fs::write(args.nginx_filepath, nginx).expect("Error while writing to Nginx file.");
-    println!("Written Nginx configuration.");
+    thread::scope(|scope| {
+        scope.spawn(|| {
+            let nginx = generate_nginx_file(&configuration);
+            println!("Generated Nginx configuration.");
+            fs::write(args.nginx_filepath, nginx).expect("Error while writing to Nginx file.");
+            println!("Written Nginx configuration.");
+        });
 
-    if let Some(runall_path) = args.runall_filepath {
-        let runall = generate_runall(&configuration).expect("Error while generating runall file.");
-        println!("Generated script.");
-        fs::write(runall_path, runall).expect("Error while writing to runall file.");
-        println!("Written script.");
-    } else {
-        println!("Skipping script generation.");
-    }
+        if let Some(runall_path) = args.runall_filepath {
+            scope.spawn(|| {
+                let runall =
+                    generate_runall(&configuration).expect("Error while generating runall file.");
+                println!("Generated script.");
+                fs::write(runall_path, runall).expect("Error while writing to runall file.");
+                println!("Written script.");
+            });
+        } else {
+            println!("Skipping script generation.");
+        }
+    });
 
     let duration = start.elapsed();
     println!(
