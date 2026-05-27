@@ -15,7 +15,7 @@ pub fn generate_runall(config: &ConfigJson) -> Result<String, std::fmt::Error> {
 
         write!(
             runall,
-            "\n# Server: {}\n # Venv: {}\n",
+            "\n# Server: {}\n# Venv: {}\n",
             server.name,
             if run.venv { "on" } else { "off" }
         )?;
@@ -25,7 +25,7 @@ pub fn generate_runall(config: &ConfigJson) -> Result<String, std::fmt::Error> {
         }
         runall.push_str(&run.command);
         if run.venv {
-            runall.push_str("deactivate");
+            runall.push_str("\ndeactivate");
         }
         runall.push('\n');
     }
