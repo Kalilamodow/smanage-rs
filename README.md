@@ -8,7 +8,7 @@ I have little experience with Rust, so the code is probably pretty bad. I'd appr
 
 It's a pretty basic Rust project. Just `cargo run`, `cargo build`, the whole shebang.
 
-It uses `serde` and `serde_json` for reading the configuration file, then uses a ton of String writes to codegen the nginx and Bash files. I tried to make it modular (or at least as modular as something like this could be), but I didn't go too far, so there's a few files but I didn't add a huge framework to make it infinitely extensible. Though, that might be a fun future project.
+It uses `serde` and `serde_json` for reading the configuration file. It then uses a small helper struct to manage indentation so that it doesn't have to have `\n\t`s everywhere. I tried to make it a lot more modular than the old Python version, and adding features has been a lot easier.
 
 ## Notes
 

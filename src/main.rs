@@ -1,3 +1,4 @@
+mod codestr;
 mod config;
 mod nginx_generator;
 mod runall_generator;
