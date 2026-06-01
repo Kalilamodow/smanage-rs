@@ -16,7 +16,13 @@ fn create_nginx_block(
         server.subdomain.as_deref().unwrap_or("None")
     )?;
 
-    block.push_str("server {\n\tlisten 80;\n\t");
+    block.push_str("server {\n\t");
+
+    if server.ssl.is_some() {
+        block.push_str("listen 443;\n\t");
+    } else {
+        block.push_str("listen 80;\n\t");
+    }
 
     write!(
         block,
@@ -37,7 +43,19 @@ fn create_nginx_block(
         block.push_str("\\.");
     }
 
-    write!(block, "{}$;\n\n\tlocation / {{\n\t\t", domain)?;
+    write!(block, "{}$;\n\n\t", domain)?;
+
+    if let Some(ssl) = &server.ssl {
+        write!(
+            block,
+            "ssl_certificate {};\n\tssl_certificate_key {};\n\n\t",
+            ssl.cert,
+            ssl.key.as_ref().unwrap_or(&ssl.cert)
+        )?;
+    }
+
+    block.push_str("location / {\n\t\t");
+
     write!(block, "proxy_pass http://127.0.0.1:{}/;\n\t\t", server.port)?;
     block.push_str("proxy_set_header Host $host;");
 

@@ -10,6 +10,12 @@ pub struct RunConfigJson {
 }
 
 #[derive(Deserialize, Debug)]
+pub struct SSLConfigJson {
+    pub cert: String,
+    pub key: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct ConfigServerJson {
     pub name: String,
     pub port: i16,
@@ -19,6 +25,7 @@ pub struct ConfigServerJson {
     #[serde(default)]
     pub allow_sub_ext: bool,
     pub run: Option<RunConfigJson>,
+    pub ssl: Option<SSLConfigJson>,
 }
 
 #[derive(Deserialize, Debug)]
